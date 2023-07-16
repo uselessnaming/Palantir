@@ -2,7 +2,7 @@
 Project with Family
 
 ### __Commit Convention__
-type
+#### type
 + add : 새로운 기능 추가
 + update : 기능 수정 (방향성 전환)
 + fix : 오류 수정

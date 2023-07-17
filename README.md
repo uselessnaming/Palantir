@@ -21,7 +21,7 @@ Project with Family
 
 #### 문제
 + [#1] AndroidLarge35()에서 TextButton을 Click하면 DatePickerDialog가 띄워져야 하지만 오류로 인해 event 적용이 안됌
-  >> Dialog 안에 조건문 작성을 함께 해서 중복으로 인해 오류 발생 : 조건문을 밖으로 빼서 해결
+  > Dialog 안에 조건문 작성을 함께 해서 중복으로 인해 오류 발생 : 조건문을 밖으로 빼서 해결
 + [#1] CustomCalendarDialog에서 SpinnerButton을 Click하면 TimePicker가 생성되어야 하지만 오류로 인해 안 나옴. 하지만 Event 자체는 이상 없음
 
 #### 할 일

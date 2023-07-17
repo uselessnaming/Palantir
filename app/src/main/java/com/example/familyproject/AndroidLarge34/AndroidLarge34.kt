@@ -52,7 +52,6 @@ import com.example.familyproject.ui.theme.TextButtonColor
 import com.example.familyproject.ui.theme.ThinTextColor
 import com.example.familyproject.ui.theme.White
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AndroidLarge34(
     navController : NavController

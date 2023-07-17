@@ -11,8 +11,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.familyproject.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,12 +30,13 @@ fun TopBar(
             modifier = modifier,
             title = {
                 Text(
-                text = title,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 40.dp)
-            )
+                    text = title,
+                    fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 40.dp)
+                )
             },
             navigationIcon = {
                 Icon(

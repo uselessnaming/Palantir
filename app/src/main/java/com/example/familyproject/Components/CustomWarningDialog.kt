@@ -2,7 +2,6 @@ package com.example.familyproject.Components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,7 +40,6 @@ fun WarningDialog(
             text = "이 일정을 삭제하시겠습니까?",
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-            fontWeight = FontWeight(400),
             color = ThickTextColor,
         )
 
@@ -52,7 +49,6 @@ fun WarningDialog(
             text = "삭제된 일정은 복구할 수 없습니다.",
             fontSize = 12.sp,
             fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-            fontWeight = FontWeight(400),
             color = ThinTextColor,
         )
 
@@ -67,7 +63,6 @@ fun WarningDialog(
                 text = "취소",
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_bold)),
-                fontWeight = FontWeight(400),
                 color = ThickTextColor,
             )
 
@@ -75,7 +70,6 @@ fun WarningDialog(
                 text = "삭제?",
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_bold)),
-                fontWeight = FontWeight(400),
                 color = ThickTextColor,
             )
 

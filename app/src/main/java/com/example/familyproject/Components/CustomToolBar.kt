@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familyproject.R
@@ -37,7 +36,6 @@ fun CustomToolBar(
             content = currentYearMonth,
             fontSize = 20.sp,
             fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-            fontWeight = FontWeight(400),
             textColor = ThickTextColor
         )
         Spacer(modifier = Modifier.weight(1f))

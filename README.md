@@ -30,6 +30,5 @@ Project with Family
 #### 할 일
 + AndroidLarge35()의 Dropdown Menu 연동
 + Calendar들 무조건 42일로 맞추지 말고 유동적으로 필요한 일만 가지고 Calendar 구성
-+ Calendar 전체적으로 수정 필요
 
 ---

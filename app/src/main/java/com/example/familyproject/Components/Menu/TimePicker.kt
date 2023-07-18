@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.familyproject.Components.CustomTextButton
 import com.example.familyproject.R
 import com.example.familyproject.ui.theme.FamilyProjectTheme
@@ -59,104 +60,108 @@ fun CustomTimePicker(
 
     val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .width(282.dp)
-            .height(230.dp)
-            .background(color = White)
-            .padding(10.dp)
+    Dialog(
+        onDismissRequest = onDismissRequest
     ){
-        Row(
-            modifier = Modifier.weight(1f)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .width(282.dp)
+                .height(230.dp)
+                .background(color = White)
+                .padding(10.dp)
         ){
-            LazyColumn(
-                modifier = Modifier.weight(3f),
-                verticalArrangement = Arrangement.spacedBy(
-                    space = 10.dp,
-                    alignment = Alignment.CenterVertically
-                ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                state = yearListState
-            ) {
-                items(years.size){
-                    val isSelected = years[it] == selectedYear
-                    if (years[it] != 0){
-                        Text(
-                            modifier = Modifier
-                                .clickable {
-                                    selectedYear = years[it]
-                                }
-                                .focusable(isSelected),
-                            text = years[it].toString() + "년",
-                            fontFamily = if (isSelected) FontFamily(Font(R.font.gmarket_sans_ttf_bold)) else FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-                            color = if (isSelected) Palette1 else TextColor
-                        )
-                    } else {
-                        Text(
-                            text = ""
-                        )
-                    }
-                }
-            }
-            LazyColumn(
-                modifier = Modifier.weight(2f),
-                verticalArrangement = Arrangement.spacedBy(
-                    space = 10.dp,
-                    alignment = Alignment.CenterVertically
-                ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                state = monthListState
+            Row(
+                modifier = Modifier.weight(1f)
             ){
-                items(months.size){
-                    val isSelected = months[it] == selectedMonth
-                    if (months[it] != 0){
-                        Text(
-                            modifier = Modifier
-                                .clickable {
-                                    selectedMonth = months[it]
-                                }
-                                .focusable(isSelected),
-                            text = months[it].toString() + "월",
-                            fontFamily = if (isSelected) FontFamily(Font(R.font.gmarket_sans_ttf_bold)) else FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-                            color = if (isSelected) Palette1 else TextColor
-                        )
-                    } else {
-                        Text(text = "")
+                LazyColumn(
+                    modifier = Modifier.weight(3f),
+                    verticalArrangement = Arrangement.spacedBy(
+                        space = 10.dp,
+                        alignment = Alignment.CenterVertically
+                    ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    state = yearListState
+                ) {
+                    items(years.size){
+                        val isSelected = years[it] == selectedYear
+                        if (years[it] != 0){
+                            Text(
+                                modifier = Modifier
+                                    .clickable {
+                                        selectedYear = years[it]
+                                    }
+                                    .focusable(isSelected),
+                                text = years[it].toString() + "년",
+                                fontFamily = if (isSelected) FontFamily(Font(R.font.gmarket_sans_ttf_bold)) else FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+                                color = if (isSelected) Palette1 else TextColor
+                            )
+                        } else {
+                            Text(
+                                text = ""
+                            )
+                        }
+                    }
+                }
+                LazyColumn(
+                    modifier = Modifier.weight(2f),
+                    verticalArrangement = Arrangement.spacedBy(
+                        space = 10.dp,
+                        alignment = Alignment.CenterVertically
+                    ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    state = monthListState
+                ){
+                    items(months.size){
+                        val isSelected = months[it] == selectedMonth
+                        if (months[it] != 0){
+                            Text(
+                                modifier = Modifier
+                                    .clickable {
+                                        selectedMonth = months[it]
+                                    }
+                                    .focusable(isSelected),
+                                text = months[it].toString() + "월",
+                                fontFamily = if (isSelected) FontFamily(Font(R.font.gmarket_sans_ttf_bold)) else FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+                                color = if (isSelected) Palette1 else TextColor
+                            )
+                        } else {
+                            Text(text = "")
+                        }
+                    }
+                }
+                LaunchedEffect(selectedYear, selectedMonth){
+                    coroutineScope.launch{
+                        val yearIndex = years.indexOf(selectedYear)
+                        val monthIndex = months.indexOf(selectedMonth)
+                        yearListState.animateScrollToItem(yearIndex, -230)
+                        monthListState.animateScrollToItem(monthIndex,-230)
                     }
                 }
             }
-            LaunchedEffect(selectedYear, selectedMonth){
-                coroutineScope.launch{
-                    val yearIndex = years.indexOf(selectedYear)
-                    val monthIndex = months.indexOf(selectedMonth)
-                    yearListState.animateScrollToItem(yearIndex, -230)
-                    monthListState.animateScrollToItem(monthIndex,-230)
-                }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.height(16.dp).fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                CustomTextButton(
+                    modifier = Modifier.clickable{
+                        onDismissRequest()
+                    },
+                    content = "취소",
+                    textColor = ThickTextColor,
+                    fontSize = 16.sp,
+                )
+                Spacer(Modifier.width(26.dp))
+                CustomTextButton(
+                    modifier = Modifier.clickable{
+                        onTimeSelected(selectedYear, selectedMonth)
+                    },
+                    content = "확인",
+                    textColor = ThickTextColor,
+                    fontSize =16.sp,
+                )
             }
-        }
-        Spacer(Modifier.height(10.dp))
-        Row(
-            modifier = Modifier.height(16.dp).fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            CustomTextButton(
-                modifier = Modifier.clickable{
-                    onDismissRequest()
-                },
-                content = "취소",
-                textColor = ThickTextColor,
-                fontSize = 16.sp,
-            )
-            Spacer(Modifier.width(26.dp))
-            CustomTextButton(
-                modifier = Modifier.clickable{
-                    onTimeSelected(selectedYear, selectedMonth)
-                },
-                content = "확인",
-                textColor = ThickTextColor,
-                fontSize =16.sp,
-            )
         }
     }
 }

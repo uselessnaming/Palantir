@@ -24,22 +24,25 @@ import com.example.familyproject.ui.theme.FamilyProjectTheme
 fun AndroidLarge35(
     navController : NavController
 ){
-    val monthCalendar = MonthCalendar()
+    val monthCalendar = remember{MonthCalendar()}
 
-    val currentYearMonth = remember{mutableStateOf(monthCalendar.getDate())}
+    var currentYearMonth by remember{mutableStateOf(monthCalendar.getDate())}
     var selectedDate by remember{ mutableStateOf(monthCalendar.today) }
 
     var isDateClicked by remember{mutableStateOf(false)}
 
     if (isDateClicked){
         CustomCalendarDialog(
+            monthCalendar = monthCalendar,
             onDismissRequest = {
                 isDateClicked = !isDateClicked
             },
             onDateSelected = { date ->
                 selectedDate = date
+                currentYearMonth = selectedDate.year.toString() + "년" + selectedDate.month.toString() + "월"
+                monthCalendar.updateCalendar(date.year, date.month)
                 isDateClicked = !isDateClicked
-            }
+            },
         )
     }
 
@@ -54,7 +57,7 @@ fun AndroidLarge35(
         ){
 
             CustomToolBar(
-                currentYearMonth = currentYearMonth.value,
+                currentYearMonth = currentYearMonth,
                 onMenuClick = {
                     //menu 클릭 이벤트
                 },
@@ -63,21 +66,12 @@ fun AndroidLarge35(
                     isDateClicked = !isDateClicked
                 }
             )
-            CustomCalendar(monthCalendar = getSelectedMonthCalendar(selectedDate))
+            CustomCalendar(
+                monthCalendar = monthCalendar,
+                selectedDate = selectedDate
+            )
         }
     }
-}
-
-fun getSelectedMonthCalendar(selectedDate : CalendarDay) : MonthCalendar{
-    val monthCalendar = MonthCalendar()
-
-    val year = selectedDate.year
-    val month = selectedDate.month
-    val day = selectedDate.day
-
-    monthCalendar.updateCalendar(year, month, day)
-
-    return monthCalendar
 }
 
 @Preview

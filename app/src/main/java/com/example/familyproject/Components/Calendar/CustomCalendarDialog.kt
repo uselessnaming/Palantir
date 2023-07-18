@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -52,12 +53,10 @@ import com.example.familyproject.ui.theme.White
 
 @Composable
 fun CustomCalendarDialog(
+    monthCalendar : MonthCalendar,
     onDismissRequest : () -> Unit,
     onDateSelected : (CalendarDay) -> Unit,
 ){
-
-    val monthCalendar = MonthCalendar()
-
     var selectedDate by remember{mutableStateOf(monthCalendar.today)}
     var isSpinnerOpen by remember{mutableStateOf(false)}
 
@@ -82,7 +81,24 @@ fun CustomCalendarDialog(
                         modifier = Modifier.size(30.dp),
                         icon = R.drawable.btn_back,
                         description = "Previous Month",
-                        onClick = {}
+                        onClick = {
+                            selectedDate = if (selectedDate.month == 1){
+                                CalendarDay(
+                                    selectedDate.year - 1,
+                                    12,
+                                    1,
+                                    false
+                                )
+                            } else {
+                                CalendarDay(
+                                    selectedDate.year,
+                                    selectedDate.month - 1,
+                                    1,
+                                    false
+                                )
+                            }
+                            monthCalendar.updateCalendar(selectedDate.year, selectedDate.month)
+                        }
                     )
 
                     Spacer(Modifier.weight(1f))
@@ -103,7 +119,6 @@ fun CustomCalendarDialog(
                         icon = R.drawable.btn_spinner,
                         description = "Spinner Btn",
                         onClick = {
-                            Log.d("BBBBBB","${isSpinnerOpen}")
                             isSpinnerOpen = !isSpinnerOpen
                         }
                     )
@@ -114,7 +129,24 @@ fun CustomCalendarDialog(
                         modifier = Modifier.size(30.dp),
                         icon = R.drawable.btn_next,
                         description = "Next Month",
-                        onClick = {}
+                        onClick = {
+                            selectedDate = if (selectedDate.month == 12){
+                                CalendarDay(
+                                    selectedDate.year + 1,
+                                    1,
+                                    1,
+                                    false
+                                )
+                            } else {
+                                CalendarDay(
+                                    selectedDate.year,
+                                    selectedDate.month + 1,
+                                    1,
+                                    false
+                                )
+                            }
+                            monthCalendar.updateCalendar(selectedDate.year, selectedDate.month)
+                        }
                     )
                 }
 
@@ -176,6 +208,7 @@ fun CustomCalendarDialog(
                     columns = GridCells.Fixed(7)
                 ){
                     items(days.value!!){date ->
+                        Log.d("BBBBBB","date : ${date}")
                         Box(
                             modifier = Modifier
                                 .width(35.dp)
@@ -254,6 +287,9 @@ fun CustomCalendarDialog(
                 }
             }
         }
+        LaunchedEffect(selectedDate){
+            monthCalendar.updateCalendar(selectedDate.year, selectedDate.month)
+        }
     }
 }
 
@@ -261,12 +297,14 @@ fun CustomCalendarDialog(
 @Composable
 fun TestCustomCalendarDialog(){
     FamilyProjectTheme {
+        val monthCalendar = MonthCalendar()
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = White)
         ){
             CustomCalendarDialog(
+                monthCalendar = monthCalendar,
                 onDismissRequest = {},
                 onDateSelected = {}
             )

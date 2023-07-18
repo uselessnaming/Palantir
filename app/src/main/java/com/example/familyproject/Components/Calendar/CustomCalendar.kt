@@ -1,5 +1,6 @@
 package com.example.familyproject
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -78,13 +79,18 @@ class MonthCalendar{
     fun getDate() : String{
         return "${monthCalendar.get(Calendar.YEAR)}년 ${monthCalendar.get(Calendar.MONTH) + 1}월"
     }
+    
     /**해당 년도와 달을 기점으로 달력을 업데이트 하는 함수 */
-    fun updateCalendar(year : Int, month : Int, day : Int) {
+    fun updateCalendar(year : Int, month : Int) {
+
+        monthCalendar.set(Calendar.YEAR, year)
+        monthCalendar.set(Calendar.MONTH, month-1)
+        monthCalendar.set(Calendar.DAY_OF_MONTH, 1)
 
         val tmpList = mutableListOf<CalendarDay>()
 
         val firstDayOfMonth = Calendar.getInstance().apply{
-            set( year, month, 1)
+            set( year, month-1, 1)
         }
 
         val firstDayOfWeek = firstDayOfMonth.get(Calendar.DAY_OF_WEEK)
@@ -103,6 +109,7 @@ class MonthCalendar{
                     false
                 )
             )
+            Log.d("BBBBBB","${tmpList}")
         }
 
         //이번 달 날들로 채움
@@ -116,11 +123,12 @@ class MonthCalendar{
                     true
                 )
             )
+            Log.d("BBBBBB","${tmpList}")
         }
 
         //다음 달 날들로 7 * 6 사이즈를 맞추기
         val nextMonth = monthCalendar.clone() as Calendar
-        nextMonth.add(Calendar.MONTH, 1)
+        nextMonth.add(month, 1)
         val daysToAdd = 42 - tmpList.size
         for (i in 1..daysToAdd){
             tmpList.add(
@@ -131,10 +139,13 @@ class MonthCalendar{
                     false
                 )
             )
+            Log.d("BBBBBB","${tmpList}")
         }
+        Log.d("BBBBBB","updateCalendar result : ${tmpList}")
         submitList(tmpList)
     }
 
+    //initialize 할 때 기본 달력
     private fun getWeekDays(){
 
         val tmpList = mutableListOf<CalendarDay>()
@@ -149,13 +160,13 @@ class MonthCalendar{
         // 전 달의 날들로 1일 전을 채움
         val previousMonth = monthCalendar.clone() as Calendar
         previousMonth.add(Calendar.MONTH, -1)
-        val lastDayOfPreviousMonth = previousMonth.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val lastDayOfPreviousMonth = previousMonth.getActualMaximum(monthCalendar.get(Calendar.MONTH)-1)
         
         for (i in 1 until firstDayOfWeek){
             tmpList.add(
                 CalendarDay(
                     previousMonth.get(Calendar.YEAR),
-                    previousMonth.get(Calendar.MONTH),
+                    previousMonth.get(Calendar.MONTH)+1,
                     lastDayOfPreviousMonth - (firstDayOfWeek - i -1),
                     false
                 )
@@ -165,7 +176,7 @@ class MonthCalendar{
         //이번 달 날들로 채움
         val month = today.month
         val lastDayOfMonth = monthCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        for (i in 1 until lastDayOfMonth){
+        for (i in 1 .. lastDayOfMonth){
             tmpList.add(
                 CalendarDay(
                     monthCalendar.get(Calendar.YEAR),
@@ -190,15 +201,17 @@ class MonthCalendar{
                 )
             )
         }
+        Log.d("BBBBBB","getWeeks call, result : ${tmpList}")
         submitList(tmpList)
     }
 }
 
 @Composable
 fun CustomCalendar(
-    monthCalendar : MonthCalendar
+    monthCalendar : MonthCalendar,
+    selectedDate : CalendarDay
 ){
-    var selectedState by remember{ mutableStateOf(monthCalendar.today) }
+    var selectedState by remember{ mutableStateOf(selectedDate) }
 
     Column(
         verticalArrangement = Arrangement.Center,

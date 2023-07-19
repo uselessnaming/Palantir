@@ -3,8 +3,11 @@ package com.example.familyproject
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,20 +19,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.familyproject.AndroidLarge35.CustomBottomSheetDialog
 import com.example.familyproject.Components.Calendar.CustomCalendarDialog
 import com.example.familyproject.Components.CustomToolBar
 import com.example.familyproject.ui.theme.FamilyProjectTheme
 
 @Composable
 fun AndroidLarge35(
-    navController : NavController
+    navController : NavController,
+    monthCalendar : MonthCalendar
 ){
-    val monthCalendar = remember{MonthCalendar()}
-
     var currentYearMonth by remember{mutableStateOf(monthCalendar.getDate())}
     var selectedDate by remember{ mutableStateOf(monthCalendar.today) }
 
     var isDateClicked by remember{mutableStateOf(false)}
+    var isBottomNavClicked by remember{mutableStateOf(false)}
 
     if (isDateClicked){
         CustomCalendarDialog(
@@ -43,6 +47,15 @@ fun AndroidLarge35(
                 monthCalendar.updateCalendar(date.year, date.month)
                 isDateClicked = !isDateClicked
             },
+        )
+    }
+
+    if (isBottomNavClicked){
+        CustomBottomSheetDialog(
+            onDismissRequest = {
+                isBottomNavClicked = !isBottomNavClicked
+            },
+            navController = navController,
         )
     }
 
@@ -66,9 +79,15 @@ fun AndroidLarge35(
                     isDateClicked = !isDateClicked
                 }
             )
+
+            Spacer(modifier = Modifier.height(23.dp))
+
             CustomCalendar(
                 monthCalendar = monthCalendar,
-                selectedDate = selectedDate
+                selectedDate = selectedDate,
+                isBottomNavClick = {
+                    isBottomNavClicked = !isBottomNavClicked
+                }
             )
         }
     }
@@ -78,6 +97,6 @@ fun AndroidLarge35(
 @Composable
 fun PreviewAndroid(){
     FamilyProjectTheme {
-        AndroidLarge35(navController = rememberNavController())
+        AndroidLarge35(navController = rememberNavController(), MonthCalendar())
     }
 }

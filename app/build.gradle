@@ -52,9 +52,6 @@ dependencies {
     //liveData
     implementation 'androidx.compose.runtime:runtime-livedata:1.4.3'
 
-    //bottom sheet dialog
-    implementation 'com.holix.android:bottomsheetdialog-compose:1.0.3'
-
     //navigation
     implementation 'androidx.navigation:navigation-compose:2.6.0'
 

@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -209,63 +209,64 @@ class MonthCalendar{
 @Composable
 fun CustomCalendar(
     monthCalendar : MonthCalendar,
-    selectedDate : CalendarDay
+    selectedDate : CalendarDay,
+    isBottomNavClick : () -> Unit
 ){
     var selectedState by remember{ mutableStateOf(selectedDate) }
 
     Column(
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         val days = monthCalendar.dayList.observeAsState()
 
-        Spacer(modifier = Modifier.height(23.dp))
-
         Row(
             Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(21.dp),
             horizontalArrangement = Arrangement.Start
         ){
             Text(text = "SUN",
                 Modifier
-                    .height(21.dp)
+                    .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp
             )
             Text(text = "MON",
                 Modifier
-                    .height(21.dp)
+                    .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp)
             Text(text = "TUE",
                 Modifier
-                    .height(21.dp)
+                    .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp)
             Text(text = "WED",
                 Modifier
-                    .height(21.dp)
+                    .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp)
             Text(text = "THU",
                 Modifier
-                    .height(21.dp)
+                    .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp)
             Text(text = "FRI",
                 Modifier
-                    .height(21.dp)
+                    .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp)
             Text(text = "SAT",
                 Modifier
-                    .height(21.dp)
+                    .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp)
@@ -273,12 +274,14 @@ fun CustomCalendar(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(7),
-            modifier = Modifier.padding(top = 16.dp)){
+            modifier = Modifier.padding(top = 16.dp)
+                .weight(1f)
+        ){
             items(days.value!!){date ->
                 Box(
                     modifier = Modifier
-                        .width(35.dp)
-                        .height(130.dp)
+                        .weight(1f)
+                        .height(110.dp)
                         .border(
                             border = if(date == selectedState) BorderStroke(width = 1.dp, color = SpinnerBorder) else BorderStroke(width = 0.dp, color = Color.Transparent),
                         )
@@ -286,7 +289,7 @@ fun CustomCalendar(
                             selectedState = date
                         }
                 ){
-                    Column {
+                    Column{
                         Text(
                             text = "${date.day}",
                             modifier = Modifier
@@ -306,13 +309,14 @@ fun CustomCalendar(
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.fillMaxWidth()
-                .padding(0.dp)
+                .padding(end = 7.dp)
+                .height(50.dp)
         ){
             CustomImageButton(
                 modifier = Modifier,
                 icon = R.drawable.add_floating_button,
                 description = "Add FLoating Button",
-                onClick = {}
+                onClick = isBottomNavClick
             )
         }
     }

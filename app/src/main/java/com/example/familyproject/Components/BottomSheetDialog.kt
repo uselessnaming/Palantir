@@ -60,6 +60,7 @@ fun CustomBottomSheetDialog(
                 ){
                     Text(
                         modifier = Modifier.clickable{
+                            onDismissRequest()
                             navController.navigate(ProjectScreen.AndroidLarge43.name)
                         },
                         text = "to do list",
@@ -72,6 +73,7 @@ fun CustomBottomSheetDialog(
 
                     Text(
                         modifier = Modifier.clickable{
+                            onDismissRequest()
                             navController.navigate(ProjectScreen.AndroidLarge44.name)
                         },
                         text = "일정",
@@ -84,6 +86,7 @@ fun CustomBottomSheetDialog(
 
                     Text(
                         modifier = Modifier.clickable{
+                            onDismissRequest()
                             navController.navigate(ProjectScreen.AndroidLarge39.name)
                         },
                         text = "다이어리",

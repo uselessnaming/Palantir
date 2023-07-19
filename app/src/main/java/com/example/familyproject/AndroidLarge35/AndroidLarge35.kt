@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +33,7 @@ fun AndroidLarge35(
 
     var isDateClicked by remember{mutableStateOf(false)}
     var isBottomNavClicked by remember{mutableStateOf(false)}
+    var isMenuDown by remember{mutableStateOf(false)}
 
     if (isDateClicked){
         CustomCalendarDialog(
@@ -73,11 +73,19 @@ fun AndroidLarge35(
                 currentYearMonth = currentYearMonth,
                 onMenuClick = {
                     //menu 클릭 이벤트
+                    isMenuDown = !isMenuDown
                 },
                 onDateClick = {
                     //날짜 클릭 >> DatePicker 생성
                     isDateClicked = !isDateClicked
-                }
+                },
+                isExpanded = isMenuDown,
+                menus = listOf("달력","to do list","다이어리"),
+                onDismissRequest = {
+                    isMenuDown = !isMenuDown
+                },
+                navController = navController,
+                navs = listOf("")
             )
 
             Spacer(modifier = Modifier.height(23.dp))

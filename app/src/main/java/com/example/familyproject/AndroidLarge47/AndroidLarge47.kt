@@ -54,6 +54,7 @@ fun AndroidLarge47(
     /** Three Dots Menu() */
     val menus = listOf("수정","복제","삭제")
     var menuState by remember{mutableStateOf(false)}
+    var isMenuDown by remember{mutableStateOf(false)}
 
     Scaffold(
         topBar = {
@@ -96,7 +97,11 @@ fun AndroidLarge47(
                     onDismissRequest = { menuState = false },
                 ){
                     ThreeDotsMenu(
-                        menus = menus
+                        menus = menus,
+                        isExpanded = isMenuDown,
+                        onDismissRequest = {
+                            isMenuDown = !isMenuDown
+                        }
                     )
                 }
 

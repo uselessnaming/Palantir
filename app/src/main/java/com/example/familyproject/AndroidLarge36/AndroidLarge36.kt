@@ -14,14 +14,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.familyproject.Components.Calendar.CustomSubCalendar
 import com.example.familyproject.Components.CustomButton
 import com.example.familyproject.Components.CustomLine
@@ -38,6 +39,8 @@ import com.example.familyproject.ui.theme.TextColor
 @Composable
 fun AndroidLarge36(
 ){
+    var isMenuDown by remember{mutableStateOf(false)}
+
     Surface{
         Column(
             modifier = Modifier.fillMaxSize()
@@ -47,7 +50,12 @@ fun AndroidLarge36(
             ){
                 CustomToolBar(
                     currentYearMonth = "",
-                    onMenuClick = {}
+                    onMenuClick = {},
+                    isExpanded = isMenuDown,
+                    menus = listOf("달력","to do list","다이어리"),
+                    onDismissRequest = {
+                        isMenuDown = !isMenuDown
+                    },
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))

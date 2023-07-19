@@ -14,14 +14,21 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.familyproject.AndroidLarge47.ThreeDotsMenu
 import com.example.familyproject.R
 import com.example.familyproject.ui.theme.ThickTextColor
 
 @Composable
 fun CustomToolBar(
+    navController : NavController,
     currentYearMonth : String,
     onMenuClick : () -> Unit = {},
     onDateClick : () -> Unit = {},
+    isExpanded : Boolean,
+    menus : List<String>,
+    navs : List<String>,
+    onDismissRequest : () -> Unit,
 ){
     Row(
         modifier = Modifier
@@ -48,13 +55,24 @@ fun CustomToolBar(
             onClick = {},
         )
         Spacer(modifier = Modifier.width(18.dp))
-        CustomImageButton(
-            modifier = Modifier
-                .height(30.dp)
-                .width(30.dp),
-            icon = R.drawable.menu,
-            description = "menu",
-            onClick = onMenuClick
-        )
+        Row(
+            modifier = Modifier.height(30.dp).width(30.dp)
+        ){
+            CustomImageButton(
+                modifier = Modifier
+                    .height(30.dp)
+                    .width(30.dp),
+                icon = R.drawable.menu,
+                description = "menu",
+                onClick = onMenuClick
+            )
+            ThreeDotsMenu(
+                navController = navController,
+                isExpanded = isExpanded,
+                menus = menus,
+                navs = navs,
+                onDismissRequest = onDismissRequest
+            )
+        }
     }
 }

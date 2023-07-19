@@ -26,9 +26,11 @@ Project with Family
 + [#4] CustomCalendarDialog에서 SpinnerButton을 Click하면 TimePicker가 생성되어야 하지만 오류로 인해 안 나옴. 하지만 Event 자체는 이상 없음
   > TimePikcer를 Dialog로 감싸서 띄워 해결
 + [#4] DatePicker를 통해 Calendar 변동이 적용은 되는데 속도가 느림. 속도 개선 필요
++ [#4] AndroidLarge35()에 연결된 DropdownItem의 내부 Item들이 왼쪽 정렬되어 있는 것을 수정해야 함
 
 #### 할 일
 + AndroidLarge35()의 Dropdown Menu 연동
 + Calendar들 무조건 42일로 맞추지 말고 유동적으로 필요한 일만 가지고 Calendar 구성
++ 
 
 ---

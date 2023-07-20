@@ -18,7 +18,7 @@ fun CustomRoundedCheckBox(
         contentAlignment = Alignment.Center
     ){
         Icon(
-            painter = painterResource(id = R.drawable.check),
+            painter = painterResource(id = R.drawable.done_check),
             contentDescription = "RoundCheckBox",
             tint = Color.Blue,
         )

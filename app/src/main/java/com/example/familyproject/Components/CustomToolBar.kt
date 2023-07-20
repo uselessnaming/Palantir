@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +26,8 @@ fun CustomToolBar(
     currentYearMonth : String,
     onMenuClick : () -> Unit = {},
     onDateClick : () -> Unit = {},
+    onModeChange : () -> Unit = {},
+    mode : Int = 0,
     isExpanded : Boolean,
     menus : List<String>,
     navs : List<String>,
@@ -47,12 +50,10 @@ fun CustomToolBar(
         )
         Spacer(modifier = Modifier.weight(1f))
         CustomImageButton(
-            modifier = Modifier
-                .height(30.dp)
-                .width(30.dp),
-            icon = R.drawable.three_dot_menu,
+            modifier = Modifier.size(30.dp),
+            icon = if (mode == 0) R.drawable.three_dot_menu else if (mode == 1) R.drawable.calendar_picker else throw NoSuchElementException("해당 요소는 존재하지 않습니다."),
             description = "Weekly Mode",
-            onClick = {},
+            onClick = onModeChange,
         )
         Spacer(modifier = Modifier.width(18.dp))
         Row(

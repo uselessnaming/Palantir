@@ -54,10 +54,11 @@ import com.example.familyproject.ui.theme.White
 @Composable
 fun CustomCalendarDialog(
     monthCalendar : MonthCalendar,
+    selectedNow : CalendarDay,
     onDismissRequest : () -> Unit,
     onDateSelected : (CalendarDay) -> Unit,
 ){
-    var selectedDate by remember{mutableStateOf(monthCalendar.today)}
+    var selectedDate by remember{mutableStateOf(selectedNow)}
     var isSpinnerOpen by remember{mutableStateOf(false)}
 
     Dialog(
@@ -306,7 +307,8 @@ fun TestCustomCalendarDialog(){
             CustomCalendarDialog(
                 monthCalendar = monthCalendar,
                 onDismissRequest = {},
-                onDateSelected = {}
+                onDateSelected = {},
+                selectedNow = monthCalendar.today
             )
         }
     }

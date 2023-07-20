@@ -1,6 +1,5 @@
 package com.example.familyproject
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,16 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +32,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.familyproject.Components.CustomImageButton
 import com.example.familyproject.ui.theme.CalendarText
 import com.example.familyproject.ui.theme.SpinnerBorder
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
 import java.util.Calendar
 import java.util.Date
 
@@ -44,7 +45,9 @@ class MonthCalendar{
     private val calendar = Calendar.getInstance()
     private val monthCalendar = Calendar.getInstance()
 
-    private val tmpDayList = mutableListOf<CalendarDay>()
+    private val tmpDayList = mutableListOf<CalendarDay>() //임시로 저장된 한 달의 Date List
+
+    private val tmpWeekList = mutableListOf<CalendarDay>()  //임시로 저장된 한 주의 Date List
 
     init{
         calendar.firstDayOfWeek = Calendar.SUNDAY
@@ -71,9 +74,14 @@ class MonthCalendar{
     val dayList : LiveData<MutableList<CalendarDay>>
         get() = _dayList
 
-    private fun submitList(list : MutableList<CalendarDay>){
-        tmpDayList.clear()
-        tmpDayList.addAll(list)
+    private val _weekList : MutableLiveData<MutableList<CalendarDay>> = MutableLiveData(tmpWeekList)
+
+    val weekList : LiveData<MutableList<CalendarDay>>
+        get() = _weekList
+
+    private fun submitList(list : MutableList<CalendarDay>, targetList : MutableList<CalendarDay>){
+        targetList.clear()
+        targetList.addAll(list)
     }
 
     fun getDate() : String{
@@ -109,7 +117,6 @@ class MonthCalendar{
                     false
                 )
             )
-            Log.d("BBBBBB","${tmpList}")
         }
 
         //이번 달 날들로 채움
@@ -123,7 +130,6 @@ class MonthCalendar{
                     true
                 )
             )
-            Log.d("BBBBBB","${tmpList}")
         }
 
         //다음 달 날들로 7 * 6 사이즈를 맞추기
@@ -139,10 +145,8 @@ class MonthCalendar{
                     false
                 )
             )
-            Log.d("BBBBBB","${tmpList}")
         }
-        Log.d("BBBBBB","updateCalendar result : ${tmpList}")
-        submitList(tmpList)
+        submitList(tmpList, tmpDayList)
     }
 
     //initialize 할 때 기본 달력
@@ -201,8 +205,29 @@ class MonthCalendar{
                 )
             )
         }
-        Log.d("BBBBBB","getWeeks call, result : ${tmpList}")
-        submitList(tmpList)
+        submitList(tmpList, tmpDayList)
+    }
+
+    fun getWeek(selectedDate : CalendarDay){
+        val tmpList = mutableListOf<CalendarDay>()
+
+        val targetDate = LocalDate.of(selectedDate.year, selectedDate.month, selectedDate.day)
+        val startOfWeek = targetDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
+        val endOfWeek = targetDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY))
+
+        var tmpDate = startOfWeek
+        while(!tmpDate.isAfter(endOfWeek)){
+            tmpList.add(
+                CalendarDay(
+                    tmpDate.year,
+                    tmpDate.monthValue,
+                    tmpDate.dayOfMonth,
+                    false
+                )
+            )
+            tmpDate = tmpDate.plusDays(1)
+        }
+        submitList(tmpList, tmpWeekList)
     }
 }
 
@@ -210,10 +235,9 @@ class MonthCalendar{
 fun CustomCalendar(
     monthCalendar : MonthCalendar,
     selectedDate : CalendarDay,
+    onChangeSelectDate : (CalendarDay) -> Unit,
     isBottomNavClick : () -> Unit
 ){
-    var selectedState by remember{ mutableStateOf(selectedDate) }
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -232,44 +256,63 @@ fun CustomCalendar(
                     .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
             )
-            Text(text = "MON",
+            Text(
+                text = "MON",
                 Modifier
                     .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "TUE",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+            )
+            Text(
+                text = "TUE",
                 Modifier
                     .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "WED",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+            )
+            Text(
+                text = "WED",
                 Modifier
                     .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "THU",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+            )
+            Text(
+                text = "THU",
                 Modifier
                     .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "FRI",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+            )
+            Text(
+                text = "FRI",
                 Modifier
                     .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "SAT",
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+            )
+            Text(
+                text = "SAT",
                 Modifier
                     .fillMaxHeight()
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+            )
         }
 
         LazyVerticalGrid(
@@ -282,11 +325,8 @@ fun CustomCalendar(
                     modifier = Modifier
                         .weight(1f)
                         .height(110.dp)
-                        .border(
-                            border = if(date == selectedState) BorderStroke(width = 1.dp, color = SpinnerBorder) else BorderStroke(width = 0.dp, color = Color.Transparent),
-                        )
                         .clickable {
-                            selectedState = date
+                            onChangeSelectDate(date)
                         }
                 ){
                     Column{
@@ -295,11 +335,16 @@ fun CustomCalendar(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable{
-                                    selectedState = date
+                                    onChangeSelectDate(date)
                                 }
                                 .height(35.dp)
-                                .padding(8.dp),
+                                .padding(8.dp)
+                                .border(
+                                    border = if(date == selectedDate) BorderStroke(width = 1.dp, color = SpinnerBorder) else BorderStroke(width = 0.dp, color = Color.Transparent),
+                                    shape = CircleShape
+                                ),
                             textAlign = TextAlign.Center,
+                            fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
                             color = if(!date.isNow){SpinnerBorder} else {CalendarText}
                         )
                     }

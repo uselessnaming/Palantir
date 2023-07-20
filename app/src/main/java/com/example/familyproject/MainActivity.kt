@@ -14,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.familyproject.AndroidLarge17.AndroidLarge47
-import com.example.familyproject.AndroidLarge36.AndroidLarge36
 import com.example.familyproject.AndroidLarge39.AndroidLarge39
 import com.example.familyproject.AndroidLarge43.AndroidLarge43
 import com.example.familyproject.AndroidLarge44.AndroidLarge44
@@ -46,9 +45,6 @@ class MainActivity : ComponentActivity() {
                         composable(ProjectScreen.AndroidLarge35.name){
                             AndroidLarge35(navController, monthCalendar)
                         }
-                        composable(ProjectScreen.AndroidLarge36.name){
-                            AndroidLarge36()
-                        }
                         composable(ProjectScreen.AndroidLarge39.name){
                             AndroidLarge39()
                         }
@@ -59,7 +55,7 @@ class MainActivity : ComponentActivity() {
                             AndroidLarge44()
                         }
                         composable(ProjectScreen.AndroidLarge47.name){
-                            AndroidLarge47()
+                            AndroidLarge47(navController)
                         }
                     }
                 }

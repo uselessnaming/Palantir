@@ -56,7 +56,9 @@ fun ThreeDotsMenu(
                 contentAlignment = Alignment.Center
             ){
                 DropdownMenuItem(
-                    onClick = {/* 이동 */},
+                    onClick = {
+                        navController.navigate(navs[i])
+                    },
                     text = {Text(
                         text = menu,
                         textAlign = TextAlign.Center,

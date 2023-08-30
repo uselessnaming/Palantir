@@ -2,6 +2,7 @@ package com.example.familyproject.AndroidLarge39
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -15,9 +16,12 @@ import com.example.familyproject.ui.theme.FamilyProjectTheme
 import com.example.familyproject.ui.theme.White
 
 @Composable
-fun AddPicturesPicker(){
+fun AddPicturesPicker(
+    modifier : Modifier,
+    onAddClick : () -> Unit
+){
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(252.dp)
             .background(color = White),
@@ -27,7 +31,7 @@ fun AddPicturesPicker(){
             modifier = Modifier,
             icon = R.drawable.add_floating_button,
             description = "Add Pictures",
-            onClick = {/* 누르면 사진 Picker >> 갤러리 */}
+            onClick = onAddClick
         )
     }
 }
@@ -36,6 +40,9 @@ fun AddPicturesPicker(){
 @Composable
 fun TestAddPicturesPicker(){
     FamilyProjectTheme {
-        AddPicturesPicker()
+        AddPicturesPicker(
+            modifier = Modifier.fillMaxSize(),
+            onAddClick = {},
+        )
     }
 }

@@ -12,12 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -44,14 +47,14 @@ import com.example.familyproject.ui.theme.Palette6
 import com.example.familyproject.ui.theme.SpinnerBorder
 import com.example.familyproject.ui.theme.White
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AndroidLarge44(
 ){
-
     val alarm = listOf(
         "test1"
     )
+
+    var selectedAlarm by remember{mutableStateOf(alarm[0])}
 
     Column(
         modifier = Modifier.background(color = White)
@@ -361,7 +364,10 @@ fun AndroidLarge44(
 
                     CustomSpinner(
                         items = alarm,
-                        modifier = Modifier
+                        modifier = Modifier,
+                        onValueChange = {
+                            selectedAlarm = it
+                        }
                     )
                 }
                 Row(

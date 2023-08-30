@@ -21,7 +21,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,7 +55,7 @@ import com.example.familyproject.ui.theme.White
 @Composable
 fun AndroidLarge43(
 ){
-    var subJobCount by remember{ mutableIntStateOf(0) } //하위 작업 추가 개수
+    var subJobCount by remember{ mutableStateOf(0) } //하위 작업 추가 개수
 
     val alarmTimer = listOf(
         "알람 없음",
@@ -73,6 +73,11 @@ fun AndroidLarge43(
     val alarm = listOf(
         "test1"
     )
+
+    var selectedAlarm by remember{mutableStateOf(alarmTimer[0])}
+
+    //하위 작업 상태
+    var subJobValue by remember{mutableStateOf("")}
 
     Column(
         modifier = Modifier
@@ -148,7 +153,12 @@ fun AndroidLarge43(
                     .weight(1f)
             ){
                 items(subJobCount){
-                    AddSubJob()
+                    AddSubJob(
+                        value = subJobValue,
+                        onValueChange = {
+                            subJobValue = it
+                        }
+                    )
                 }
             }
 
@@ -255,7 +265,10 @@ fun AndroidLarge43(
 
                 CustomSpinner(
                     items = alarmTimer,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    onValueChange = {
+                        selectedAlarm = it
+                    }
                 )
             }
 
@@ -345,7 +358,10 @@ fun AndroidLarge43(
 
                     CustomSpinner(
                         items = alarm,
-                        modifier = Modifier
+                        modifier = Modifier,
+                        onValueChange = {
+                            selectedAlarm = it
+                        }
                     )
                 }
                 Row(

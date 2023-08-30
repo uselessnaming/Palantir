@@ -17,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -52,8 +52,8 @@ fun CustomTimePicker(
     val months = (1..12).toList().plus(0).plus(0).plus(0).plus(0).toList()
 
 
-    var selectedYear by remember{ mutableIntStateOf(thisYear) }
-    var selectedMonth by remember{mutableIntStateOf(thisMonth)}
+    var selectedYear by remember{ mutableStateOf(thisYear) }
+    var selectedMonth by remember{mutableStateOf(thisMonth)}
 
     val yearListState = rememberLazyListState((thisYear - 1980))
     val monthListState = rememberLazyListState(thisMonth)

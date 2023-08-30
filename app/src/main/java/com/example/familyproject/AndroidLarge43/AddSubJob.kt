@@ -13,14 +13,15 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,11 +31,12 @@ import com.example.familyproject.R
 import com.example.familyproject.ui.theme.AndroidLarge17AmbientColor
 import com.example.familyproject.ui.theme.DescriptionText
 import com.example.familyproject.ui.theme.FamilyProjectTheme
-import com.example.familyproject.ui.theme.SpinnerBorder
 import com.example.familyproject.ui.theme.White
 
 @Composable
 fun AddSubJob(
+    value : String = "",
+    onValueChange : (String) -> Unit,
 ){
     Row(
         modifier = Modifier.height(24.dp),
@@ -50,6 +52,8 @@ fun AddSubJob(
         Spacer(Modifier.width(22.dp))
 
         CustomEditText(
+            text = value,
+            onValueChange = onValueChange,
             modifier = Modifier.fillMaxHeight()
                 .weight(1f),
             hint = "하위 작업을 입력하세요",
@@ -92,10 +96,16 @@ fun SubJob(){
 @Composable
 fun TestAddSubJob(){
     FamilyProjectTheme {
+        var subJobValue by remember{ mutableStateOf("") }
         Column(
             Modifier.fillMaxSize().background(color = White)
         ){
-            AddSubJob()
+            AddSubJob(
+                value = subJobValue,
+                onValueChange = {
+                    subJobValue = it
+                }
+            )
 
             Spacer(Modifier.height(10.dp))
 

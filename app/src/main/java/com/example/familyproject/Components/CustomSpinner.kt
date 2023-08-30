@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -25,9 +26,10 @@ import com.example.familyproject.ui.theme.SpinnerBorder
 fun CustomSpinner(
     items : List<String>,
     modifier : Modifier,
+    selectedItem : String = items[0],
+    onValueChange : (String) -> Unit,
 ){
     var expanded by remember{ mutableStateOf(false) }
-    var selectedItem by remember {mutableStateOf(items[0])}
 
     Column(
         modifier = modifier
@@ -35,7 +37,9 @@ fun CustomSpinner(
         Row(
             modifier = Modifier
                 .border(width = 0.5.dp, color = SpinnerBorder)
-                .clickable { expanded = true },
+                .clickable {
+                    expanded = !expanded
+                },
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
@@ -48,18 +52,22 @@ fun CustomSpinner(
                 modifier = Modifier,
                 icon = R.drawable.btn_spinner,
                 description = "Spinner Down",
-                onClick = {}
+                onClick = {
+                    expanded = !expanded
+                }
             )
         }
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = {expanded = false},
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
         ) {
             items.forEach{item ->
-                DropdownMenuItem(onClick = {
-                    selectedItem = item
-                    expanded = false },
+                DropdownMenuItem(
+                    onClick = {
+                        onValueChange(item)
+                        expanded = false
+                    },
                     text = {Text(item)}
                 )
             }
@@ -71,8 +79,14 @@ fun CustomSpinner(
 @Composable
 fun TestSpinner(){
     FamilyProjectTheme {
+        val items = listOf("Test1","Test2")
+        var selectedItem by remember{mutableStateOf("")}
         CustomSpinner(
-            items = listOf("Test"),
-            modifier = Modifier)
+            items = items,
+            modifier = Modifier,
+            onValueChange = {
+                selectedItem = it
+            }
+        )
     }
 }

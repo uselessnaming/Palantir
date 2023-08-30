@@ -39,7 +39,6 @@ fun CustomOnAndOffBtn(
             )
             .background(color = White, shape = RoundedCornerShape(size = 50.dp))
             /** 버튼 Box를 누르면 State를 false로 바꾸고 Image를 off 버튼으로 교환 */
-            /** 버튼 Box를 누르면 State를 false로 바꾸고 Image를 off 버튼으로 교환 */
             .clickable{onClick()}
     ){
         CustomButton(

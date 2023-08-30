@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,7 +36,7 @@ fun AndroidLarge35(
     var isDateClicked by remember{mutableStateOf(false)}
     var isBottomNavClicked by remember{mutableStateOf(false)}
     var isMenuDown by remember{mutableStateOf(false)}
-    var showMode by remember{mutableIntStateOf(0)} //0이면 Monthly 1이면 Weekly
+    var showMode by remember{mutableStateOf(0)} //0이면 Monthly 1이면 Weekly
 
     if (isDateClicked){
         CustomCalendarDialog(

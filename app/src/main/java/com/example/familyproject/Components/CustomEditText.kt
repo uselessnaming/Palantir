@@ -1,5 +1,6 @@
 package com.example.familyproject.Components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import com.example.familyproject.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,9 +27,9 @@ fun CustomEditText(
     lineHeight : TextUnit = fontSize
 ){
     TextField(
+        modifier = modifier.padding(0.dp),
         value = text,
         onValueChange = onValueChange,
-        modifier = modifier,
         placeholder = {
             Text(
                 text = hint,

@@ -1,20 +1,20 @@
 package com.example.familyproject.Components
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.familyproject.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomEditText(
     text : String = "",
@@ -24,23 +24,43 @@ fun CustomEditText(
     fontFamily : FontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
     fontSize : TextUnit,
     color : Color,
-    lineHeight : TextUnit = fontSize
 ){
-    TextField(
-        modifier = modifier.padding(0.dp),
+    BasicTextField(
         value = text,
         onValueChange = onValueChange,
-        placeholder = {
-            Text(
-                text = hint,
-                fontFamily = fontFamily,
-                lineHeight = lineHeight,
-                fontSize = fontSize,
-                color = color
-           )
-        },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.Transparent,
+        modifier = modifier.padding(0.dp),
+        textStyle = TextStyle(
+            fontSize = fontSize,
+            fontFamily = fontFamily,
+            color = color
         ),
+        decorationBox = {innerTextField ->
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ){
+                if (text.isEmpty()){
+                    Text(
+                        text = hint,
+                        fontSize = fontSize,
+                        fontFamily = fontFamily,
+                        color = color,
+                    )
+                }
+                innerTextField()
+            }
+        }
+//        placeholder = {
+//            Text(
+//                text = hint,
+//                fontFamily = fontFamily,
+//                lineHeight = lineHeight,
+//                fontSize = fontSize,
+//                color = color
+//           )
+//        },
+//        colors = TextFieldDefaults.textFieldColors(
+//            containerColor = Color.Transparent,
+//        ),
+
     )
 }

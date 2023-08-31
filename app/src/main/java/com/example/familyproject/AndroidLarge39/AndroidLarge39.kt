@@ -65,7 +65,6 @@ fun AndroidLarge39(){
         modifier = Modifier
             .background(color = White)
             .fillMaxSize()
-            .verticalScroll(scrollState)
     ){
         TopBar(
             modifier = Modifier.fillMaxWidth(),
@@ -74,87 +73,92 @@ fun AndroidLarge39(){
             description = "Back Button"
         )
 
-        /** verticalScroll을 Topbar는 고정시킨 채로 이용 */
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 9.dp)
+            modifier = Modifier.fillMaxSize()
+                .verticalScroll(scrollState)
         ){
-            Spacer(Modifier.height(20.dp))
-
-            CustomSpinner(
-                /** items : 다이어리의 title들을 모아놓은 list */
-                items = menuList,
-                modifier = Modifier.fillMaxWidth(),
-                selectedItem = selectedItem,
-                onValueChange = {
-                    selectedItem = it
-                }
-            )
-
-            Spacer(Modifier.height(12.dp))
-
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(24.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
-            ) {
-                CustomImageButton(
-                    modifier = Modifier.padding(0.dp),
-                    icon = if (isAddPicture) R.drawable.done_check else R.drawable.add_picture,
-                    description = "Add Picture Button",
-                    onClick = {
-                        isAddPicture = !isAddPicture
-                    }
-                )
-                Spacer(Modifier.width(22.dp))
+                    .padding(horizontal = 9.dp)
+            ){
+                Spacer(Modifier.height(20.dp))
 
-                Text(
-                    text = "사진 추가",
-                    fontSize = 15.sp,
-                    fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-                    fontWeight = FontWeight(400),
-                    color = DescriptionText
+                CustomSpinner(
+                    /** items : 다이어리의 title들을 모아놓은 list */
+                    items = menuList,
+                    modifier = Modifier.fillMaxWidth(),
+                    selectedItem = selectedItem,
+                    onValueChange = {
+                        selectedItem = it
+                    },
+                    menuItemPadding = 9.dp
                 )
 
-                /** 사진 추가 버튼을 누르면 PicturePicker 추가 */
+                Spacer(Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(24.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    CustomImageButton(
+                        modifier = Modifier.padding(0.dp),
+                        icon = if (isAddPicture) R.drawable.done_check else R.drawable.add_picture,
+                        description = "Add Picture Button",
+                        onClick = {
+                            isAddPicture = !isAddPicture
+                        }
+                    )
+                    Spacer(Modifier.width(22.dp))
+
+                    Text(
+                        text = "사진 추가",
+                        fontSize = 15.sp,
+                        fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+                        fontWeight = FontWeight(400),
+                        color = DescriptionText
+                    )
+
+                    /** 사진 추가 버튼을 누르면 PicturePicker 추가 */
+                }
+                Spacer(Modifier.height(14.dp))
             }
-            Spacer(Modifier.height(14.dp))
-        }
 
-        if (isAddPicture) {
-            Box(
-                modifier = androidx.compose.ui.Modifier.size(configuration.screenWidthDp.dp)
-            ) {
-                PicturePicker(
-                    modifier = Modifier.fillMaxSize()
-                )
+            if (isAddPicture) {
+                Box(
+                    modifier = androidx.compose.ui.Modifier.size(configuration.screenWidthDp.dp)
+                ) {
+                    PicturePicker(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
-        }
 
-        CustomLine(
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(
-                    elevation = 4.dp,
-                    spotColor = AndroidLarge17SpotColor,
-                    ambientColor = AndroidLarge17AmbientColor
-                ),
-            type = "fully row",
-            strokeWidth = 2f
-        )
-
-        //일기 >> DiaryScreen
-        if (selectedItem == "일기"){
-            DiaryScreen(
-
+            CustomLine(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(
+                        elevation = 4.dp,
+                        spotColor = AndroidLarge17SpotColor,
+                        ambientColor = AndroidLarge17AmbientColor
+                    ),
+                type = "fully row",
+                strokeWidth = 2f
             )
-        }
-        //여행 >> TravelScreen
-        else {
-            TravelScreen()
+
+            //일기 >> DiaryScreen
+            if (selectedItem == "일기"){
+                DiaryScreen(
+
+                )
+            }
+            //여행 >> TravelScreen
+            else {
+                TravelScreen()
+            }
         }
     }
 }

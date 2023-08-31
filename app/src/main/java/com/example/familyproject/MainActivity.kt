@@ -29,6 +29,8 @@ class MainActivity : ComponentActivity() {
 
             val monthCalendar = remember{MonthCalendar()}
 
+            /** 전체 코드의 이벤트를 interactionSource를 이용하는 방식으로 바꿔보자 (modifier.clickable은 비효율적인 방법인듯 */
+
             FamilyProjectTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(

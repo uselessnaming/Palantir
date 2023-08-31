@@ -119,19 +119,21 @@ fun TravelScreen(){
             Spacer(Modifier.weight(1f))
 
             /** 선택시 시간 선택할 수 있는 dialog */
-            Text(
-                modifier = Modifier.height(24.dp),
-                text = startTime,
-                fontSize = 15.sp,
-                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-                color = AndroidLarge17SpotColor,
-                lineHeight = 24.sp
-            )
+            if (isShowTime){
+                Text(
+                    modifier = Modifier.height(24.dp),
+                    text = startTime,
+                    fontSize = 15.sp,
+                    fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+                    color = AndroidLarge17SpotColor,
+                    lineHeight = 24.sp
+                )
+            }
         }
         if (isLuna){
             Text(
                 modifier = Modifier.height(24.dp)
-                    .padding(start = 63.dp),
+                    .padding(start = 45.dp),
                 text = solarToLuna(
                     startDate,
                     dateFormatter
@@ -150,7 +152,7 @@ fun TravelScreen(){
                 .fillMaxWidth()
                 .height(24.dp),
         ) {
-            Spacer(Modifier.width(63.dp))
+            Spacer(Modifier.width(45.dp))
 
             Column(
                 modifier = Modifier.fillMaxHeight()
@@ -169,19 +171,21 @@ fun TravelScreen(){
             Spacer(Modifier.weight(1f))
 
             /** 선택시 시간 선택할 수 있는 dialog */
-            Text(
-                modifier = Modifier.height(24.dp),
-                text = endTime,
-                fontSize = 15.sp,
-                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-                color = AndroidLarge17SpotColor,
-                lineHeight = 24.sp
-            )
+            if (isShowTime){
+                Text(
+                    modifier = Modifier.height(24.dp),
+                    text = endTime,
+                    fontSize = 15.sp,
+                    fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+                    color = AndroidLarge17SpotColor,
+                    lineHeight = 24.sp
+                )
+            }
         }
         if (isLuna){
             Text(
                 modifier = Modifier.height(24.dp)
-                    .padding(start = 63.dp),
+                    .padding(start = 45.dp),
                 text = solarToLuna(
                     endDate,
                     dateFormatter
@@ -276,7 +280,7 @@ fun TravelScreen(){
             )
         }
 
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(10.dp))
 
         if (useDestination) {
             CustomEditText(
@@ -289,11 +293,10 @@ fun TravelScreen(){
                 hint = "오늘의 기분을 입력하세요",
                 fontSize = 15.sp,
                 color = DescriptionText,
-                lineHeight = 22.sp
             )
         }
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(38.dp))
 
         Row(
             modifier = Modifier
@@ -324,7 +327,7 @@ fun TravelScreen(){
             )
         }
 
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(10.dp))
 
         if (useCompanion) {
             CustomEditText(
@@ -337,11 +340,10 @@ fun TravelScreen(){
                 hint = "한줄평을 입력하세요",
                 fontSize = 15.sp,
                 color = DescriptionText,
-                lineHeight = 22.sp
             )
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(38.dp))
 
         Row(
             modifier = Modifier
@@ -372,7 +374,7 @@ fun TravelScreen(){
             )
         }
 
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(10.dp))
 
         if (useScheduler) {
             CustomEditText(
@@ -385,11 +387,10 @@ fun TravelScreen(){
                 hint = "한줄평을 입력하세요",
                 fontSize = 15.sp,
                 color = DescriptionText,
-                lineHeight = 22.sp
             )
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(38.dp))
 
         Text(
             text = "내용",
@@ -399,6 +400,8 @@ fun TravelScreen(){
             fontWeight = FontWeight(400),
             color = DescriptionText
         )
+
+        Spacer(Modifier.height(10.dp))
 
         CustomEditText(
             text = content,

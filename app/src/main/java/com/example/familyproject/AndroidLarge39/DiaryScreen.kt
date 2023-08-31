@@ -169,6 +169,8 @@ fun DiaryScreen(){
             )
         }
 
+        Spacer(Modifier.height(10.dp))
+
         if (useTodayFeeling) {
             CustomEditText(
                 modifier = Modifier
@@ -180,11 +182,10 @@ fun DiaryScreen(){
                 hint = "오늘의 기분을 입력하세요",
                 fontSize = 15.sp,
                 color = DescriptionText,
-                lineHeight = 22.sp
             )
         }
 
-        Spacer(Modifier.height(48.dp))
+        Spacer(Modifier.height(38.dp))
 
         Row(
             modifier = Modifier
@@ -215,6 +216,8 @@ fun DiaryScreen(){
             )
         }
 
+        Spacer(Modifier.height(10.dp))
+
         if (useSummary) {
             CustomEditText(
                 text = summary,
@@ -223,15 +226,13 @@ fun DiaryScreen(){
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
-//                        .height(30.dp),
                 hint = "한줄평을 입력하세요",
                 fontSize = 15.sp,
                 color = DescriptionText,
-                lineHeight = 22.sp
             )
         }
 
-        Spacer(Modifier.height(48.dp))
+        Spacer(Modifier.height(38.dp))
 
         Text(
             text = "내용",
@@ -242,6 +243,8 @@ fun DiaryScreen(){
             color = DescriptionText
         )
 
+        Spacer(Modifier.height(10.dp))
+
         CustomEditText(
             text = content,
             onValueChange = {
@@ -249,7 +252,6 @@ fun DiaryScreen(){
             },
             modifier = Modifier
                 .fillMaxWidth(),
-//                    .height(24.dp),
             hint = "내용을 입력하세요",
             fontSize = 15.sp,
             color = DescriptionText

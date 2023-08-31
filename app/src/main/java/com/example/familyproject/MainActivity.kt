@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                             AndroidLarge35(navController, monthCalendar)
                         }
                         composable(ProjectScreen.AndroidLarge39.name){
-                            AndroidLarge39()
+                            AndroidLarge39(navController)
                         }
                         composable(ProjectScreen.AndroidLarge43.name){
                             AndroidLarge43()

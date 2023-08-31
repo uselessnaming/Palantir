@@ -17,12 +17,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familyproject.CalendarDay
 import com.example.familyproject.MonthCalendar
+import com.example.familyproject.R
 import com.example.familyproject.ui.theme.FamilyProjectTheme
 import com.example.familyproject.ui.theme.SpinnerBorder
 
@@ -35,55 +38,77 @@ fun CustomSubCalendar(
     /** AndroidLarge35에서 어떤 날을 선택했을 경우 해당 날짜를 기준으로하는 1중리을 가져오는 것으로 바꿔야 함 (현재 : 현재 월의 첫 주를 가져옴) */
     val daysOfWeek = monthCalendar.weekList.observeAsState()
 
+    val fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium))
+
     Column{
         Row(
             Modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ){
-            Text(text = "SUN",
-                Modifier
+            Text(
+                text = "SUN",
+                modifier = Modifier
                     .height(21.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                fontFamily = fontFamily
             )
-            Text(text = "MON",
+            Text(
+                text = "MON",
                 Modifier
                     .height(21.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "TUE",
+                fontSize = 14.sp,
+                fontFamily = fontFamily
+            )
+            Text(
+                text = "TUE",
                 Modifier
                     .height(21.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "WED",
+                fontSize = 14.sp,
+                fontFamily = fontFamily
+            )
+            Text(
+                text = "WED",
                 Modifier
                     .height(21.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "THU",
+                fontSize = 14.sp,
+                fontFamily = fontFamily
+            )
+            Text(
+                text = "THU",
                 Modifier
                     .height(21.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "FRI",
+                fontSize = 14.sp,
+                fontFamily = fontFamily
+            )
+            Text(
+                text = "FRI",
                 Modifier
                     .height(21.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
-            Text(text = "SAT",
+                fontSize = 14.sp,
+                fontFamily = fontFamily
+            )
+            Text(
+                text = "SAT",
                 Modifier
                     .height(21.dp)
                     .weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 14.sp)
+                fontSize = 14.sp,
+                fontFamily = fontFamily
+            )
         }
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -104,7 +129,8 @@ fun CustomSubCalendar(
                         modifier = Modifier.wrapContentSize(),
                         text = date.day.toString(),
                         fontSize = 16.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontFamily = fontFamily
                     )
                 }
             }

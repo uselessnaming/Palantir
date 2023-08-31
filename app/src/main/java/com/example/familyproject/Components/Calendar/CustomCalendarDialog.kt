@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -32,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -53,166 +53,177 @@ import com.example.familyproject.ui.theme.White
 
 @Composable
 fun CustomCalendarDialog(
+    modifier : Modifier = Modifier,
     monthCalendar : MonthCalendar,
     selectedNow : CalendarDay,
     onDismissRequest : () -> Unit,
     onDateSelected : (CalendarDay) -> Unit,
 ){
+    val TAG = "CustomCalendarDialog"
+
     var selectedDate by remember{mutableStateOf(selectedNow)}
     var isSpinnerOpen by remember{mutableStateOf(false)}
 
+    var selectedYear by remember{ mutableStateOf(selectedDate.year) }
+    var selectedMonth by remember{mutableStateOf(selectedDate.month) }
+
+    val days = monthCalendar.dayList.observeAsState()
+    Log.d(TAG,"days = ${days}")
+
     Dialog(
-        onDismissRequest = {onDismissRequest()},
+        onDismissRequest = onDismissRequest,
     ) {
-        Box(
-            modifier = Modifier
-                .wrapContentSize()
+        Column(
+            modifier = modifier
                 .background(color = White)
                 .padding(start = 30.dp, end = 30.dp, top = 27.dp, bottom = 30.dp)
         ){
-            val days = monthCalendar.dayList.observeAsState()
-            Column{
-                Row(
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(30.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                CustomImageButton(
+                    modifier = Modifier.size(30.dp),
+                    icon = R.drawable.btn_back,
+                    description = "Previous Month",
+                    onClick = {
+                        selectedDate = if (selectedDate.month == 1){
+                            CalendarDay(
+                                selectedDate.year - 1,
+                                12,
+                                1,
+                                false
+                            )
+                        } else {
+                            CalendarDay(
+                                selectedDate.year,
+                                selectedDate.month - 1,
+                                1,
+                                false
+                            )
+                        }
+                        monthCalendar.updateCalendar(selectedDate.year, selectedDate.month,"dialog")
+                    }
+                )
+
+                Spacer(Modifier.weight(1f))
+
+                Text(
+                    modifier = Modifier.padding(top = 3.dp),
+                    text = "${selectedDate.year}년 ${selectedDate.month}월",
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_bold)),
+                    color = ThickTextColor
+                )
+                Spacer(Modifier.width(14.dp))
+
+                CustomImageButton(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(30.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    CustomImageButton(
-                        modifier = Modifier.size(30.dp),
-                        icon = R.drawable.btn_back,
-                        description = "Previous Month",
-                        onClick = {
-                            selectedDate = if (selectedDate.month == 1){
-                                CalendarDay(
-                                    selectedDate.year - 1,
-                                    12,
-                                    1,
-                                    false
-                                )
-                            } else {
-                                CalendarDay(
-                                    selectedDate.year,
-                                    selectedDate.month - 1,
-                                    1,
-                                    false
-                                )
-                            }
-                            monthCalendar.updateCalendar(selectedDate.year, selectedDate.month)
+                        .width(12.dp)
+                        .height(9.dp),
+                    icon = R.drawable.btn_spinner,
+                    description = "Spinner Btn",
+                    onClick = {
+                        isSpinnerOpen = !isSpinnerOpen
+                    }
+                )
+
+                Spacer(Modifier.weight(1f))
+
+                CustomImageButton(
+                    modifier = Modifier.size(30.dp),
+                    icon = R.drawable.btn_next,
+                    description = "Next Month",
+                    onClick = {
+                        selectedDate = if (selectedDate.month == 12){
+                            CalendarDay(
+                                selectedDate.year + 1,
+                                1,
+                                1,
+                                false
+                            )
+                        } else {
+                            CalendarDay(
+                                selectedDate.year,
+                                selectedDate.month + 1,
+                                1,
+                                false
+                            )
                         }
-                    )
+                        monthCalendar.updateCalendar(selectedDate.year, selectedDate.month,"dialog")
+                    }
+                )
+            }
 
-                    Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(14.dp))
 
-                    Text(
-                        modifier = Modifier.padding(top = 3.dp),
-                        text = monthCalendar.getDate(),
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_bold)),
-                        color = ThickTextColor
-                    )
-                    Spacer(Modifier.width(14.dp))
-
-                    CustomImageButton(
-                        modifier = Modifier
-                            .width(12.dp)
-                            .height(9.dp),
-                        icon = R.drawable.btn_spinner,
-                        description = "Spinner Btn",
-                        onClick = {
-                            isSpinnerOpen = !isSpinnerOpen
-                        }
-                    )
-
-                    Spacer(Modifier.weight(1f))
-
-                    CustomImageButton(
-                        modifier = Modifier.size(30.dp),
-                        icon = R.drawable.btn_next,
-                        description = "Next Month",
-                        onClick = {
-                            selectedDate = if (selectedDate.month == 12){
-                                CalendarDay(
-                                    selectedDate.year + 1,
-                                    1,
-                                    1,
-                                    false
-                                )
-                            } else {
-                                CalendarDay(
-                                    selectedDate.year,
-                                    selectedDate.month + 1,
-                                    1,
-                                    false
-                                )
-                            }
-                            monthCalendar.updateCalendar(selectedDate.year, selectedDate.month)
-                        }
-                    )
-                }
-
-                Spacer(Modifier.height(14.dp))
-
-                Row(
+            Row(
+                Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ){
+                Text(text = "SUN",
                     Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start
-                ){
-                    Text(text = "SUN",
-                        Modifier
-                            .height(21.dp)
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp
-                    )
-                    Text(text = "MON",
-                        Modifier
-                            .height(21.dp)
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp)
-                    Text(text = "TUE",
-                        Modifier
-                            .height(21.dp)
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp)
-                    Text(text = "WED",
-                        Modifier
-                            .height(21.dp)
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp)
-                    Text(text = "THU",
-                        Modifier
-                            .height(21.dp)
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp)
-                    Text(text = "FRI",
-                        Modifier
-                            .height(21.dp)
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp)
-                    Text(text = "SAT",
-                        Modifier
-                            .height(21.dp)
-                            .weight(1f),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp)
-                }
+                        .height(21.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp
+                )
+                Text(text = "MON",
+                    Modifier
+                        .height(21.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp)
+                Text(text = "TUE",
+                    Modifier
+                        .height(21.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp)
+                Text(text = "WED",
+                    Modifier
+                        .height(21.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp)
+                Text(text = "THU",
+                    Modifier
+                        .height(21.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp)
+                Text(text = "FRI",
+                    Modifier
+                        .height(21.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp)
+                Text(text = "SAT",
+                    Modifier
+                        .height(21.dp)
+                        .weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp)
+            }
 
-                Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(12.dp))
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(7)
-                ){
-                    items(days.value!!){date ->
-                        Log.d("BBBBBB","date : ${date}")
-                        Box(
+            /** 초기에 설정되는 개수에 따라 크기가 정해지기 때문에 42개로 고정하고 전체 날짜가 42개가 되지 않는다면 ""로 채워넣고 nonClickable로 바꾸자 */
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(7),
+                modifier = Modifier.height(210.dp)
+            ){
+                items(days.value!!){date ->
+                    Log.d(TAG,"days = ${days}")
+                    if (date.year != 0){
+                        Log.d(TAG,"date = ${date}")
+                        Column(
                             modifier = Modifier
-                                .width(35.dp)
+                                .height(35.dp)
                                 .wrapContentHeight()
                                 .border(
                                     border = if (date == selectedDate) BorderStroke(
@@ -222,75 +233,85 @@ fun CustomCalendarDialog(
                                 )
                                 .clickable {
                                     selectedDate = date
-                                }
+                                },
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
                         ){
-                            Column {
-                                Text(
-                                    text = "${date.day}",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            selectedDate = date
-                                        }
-                                        .height(35.dp)
-                                        .padding(8.dp),
-                                    textAlign = TextAlign.Center,
-                                    color = if(!date.isNow){
-                                        SpinnerBorder
-                                    } else {
-                                        CalendarText
-                                    },
-                                    fontSize = 14.sp,
-                                    fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium))
-                                )
-                            }
+                            Text(
+                                text = "${date.day}",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickable {
+                                        selectedDate = date
+                                    }
+                                    .padding(8.dp),
+                                textAlign = TextAlign.Center,
+                                color = if(!date.isNow){
+                                    SpinnerBorder
+                                } else {
+                                    CalendarText
+                                },
+                                fontSize = 14.sp,
+                                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium))
+                            )
                         }
+                    } else {
+                        Log.d(TAG,"Spacer")
+                        Spacer(Modifier.height(15.dp))
                     }
                 }
-                Spacer(Modifier.height(29.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ){
-                    CustomTextButton(
-                        modifier = Modifier.clickable{
-                            onDismissRequest()
-                        },
-                        content = "취소",
-                        textColor = ThickTextColor,
-                        fontSize = 16.sp,
-                    )
-                    Spacer(Modifier.width(26.dp))
-                    CustomTextButton(
-                        modifier = Modifier.clickable{
-                            onDateSelected(selectedDate)
-                        },
-                        content = "확인",
-                        textColor = ThickTextColor,
-                        fontSize =16.sp,
-                    )
-                }
-                if (isSpinnerOpen){
-                    CustomTimePicker(
-                        onDismissRequest = {
-                            isSpinnerOpen = !isSpinnerOpen
-                        },
-                        onTimeSelected = { year, month ->
-                            selectedDate = CalendarDay(
-                                year,
-                                month,
-                                1,
-                                false
-                            )
-                            isSpinnerOpen = !isSpinnerOpen
-                        }
-                    )
-                }
+            }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ){
+                CustomTextButton(
+                    modifier = Modifier.clickable{
+                        onDismissRequest()
+                    },
+                    content = "취소",
+                    textColor = ThickTextColor,
+                    fontSize = 16.sp,
+                )
+                Spacer(Modifier.width(26.dp))
+                CustomTextButton(
+                    modifier = Modifier.clickable{
+                        onDateSelected(selectedDate)
+                    },
+                    content = "확인",
+                    textColor = ThickTextColor,
+                    fontSize =16.sp,
+                )
+            }
+            if (isSpinnerOpen){
+                CustomTimePicker(
+                    onDismissRequest = {
+                        isSpinnerOpen = !isSpinnerOpen
+                    },
+                    onTimeSelected = { year, month ->
+                        selectedDate = CalendarDay(
+                            year,
+                            month,
+                            1,
+                            false
+                        )
+                        isSpinnerOpen = !isSpinnerOpen
+                    },
+                    selectedYear = selectedYear,
+                    selectedMonth = selectedMonth,
+                    onYearChange = {
+                        selectedYear = it
+                    },
+                    onMonthChange = {
+                        selectedMonth = it
+                    }
+                )
             }
         }
-        LaunchedEffect(selectedDate){
-            monthCalendar.updateCalendar(selectedDate.year, selectedDate.month)
-        }
+    }
+    LaunchedEffect(selectedDate){
+        monthCalendar.updateCalendar(selectedDate.year, selectedDate.month, "dialog")
     }
 }
 
@@ -299,12 +320,18 @@ fun CustomCalendarDialog(
 fun TestCustomCalendarDialog(){
     FamilyProjectTheme {
         val monthCalendar = MonthCalendar()
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp
+        val screenHeight = configuration.screenHeightDp
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = White)
         ){
             CustomCalendarDialog(
+                modifier = Modifier
+                    .height((screenHeight * 0.55).dp)
+                    .width((screenWidth * 0.95).dp),
                 monthCalendar = monthCalendar,
                 onDismissRequest = {},
                 onDateSelected = {},

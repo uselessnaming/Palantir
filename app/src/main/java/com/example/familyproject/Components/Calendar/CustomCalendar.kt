@@ -1,5 +1,6 @@
 package com.example.familyproject
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -69,11 +70,13 @@ class MonthCalendar{
         getWeekDays()
     }
 
+    //CustomCalendar 사용 시 이용
     private val _dayList : MutableLiveData<MutableList<CalendarDay>> = MutableLiveData(tmpDayList)
 
     val dayList : LiveData<MutableList<CalendarDay>>
         get() = _dayList
 
+    //AndrodiLarge36과 같이 주간으로 사용시 이용
     private val _weekList : MutableLiveData<MutableList<CalendarDay>> = MutableLiveData(tmpWeekList)
 
     val weekList : LiveData<MutableList<CalendarDay>>
@@ -85,11 +88,11 @@ class MonthCalendar{
     }
 
     fun getDate() : String{
-        return "${monthCalendar.get(Calendar.YEAR)}년 ${monthCalendar.get(Calendar.MONTH) + 1}월"
+        return "${monthCalendar.get(Calendar.YEAR)}년 ${monthCalendar.get(Calendar.MONTH)+1}월"
     }
     
     /**해당 년도와 달을 기점으로 달력을 업데이트 하는 함수 */
-    fun updateCalendar(year : Int, month : Int) {
+    fun updateCalendar(year : Int, month : Int, type : String = "") {
 
         monthCalendar.set(Calendar.YEAR, year)
         monthCalendar.set(Calendar.MONTH, month-1)
@@ -132,20 +135,44 @@ class MonthCalendar{
             )
         }
 
-        //다음 달 날들로 7 * 6 사이즈를 맞추기
+        //다음 달 날짜 추가
         val nextMonth = monthCalendar.clone() as Calendar
         nextMonth.add(month, 1)
-        val daysToAdd = 42 - tmpList.size
+        var daysToAdd = 0
+        //다음 달 몇 일을 추가해야 할 지 설정
+        for (i in 0..6){
+            if ((tmpList.size + i)%7 == 0){
+                daysToAdd = i
+                break
+            }
+        }
+
         for (i in 1..daysToAdd){
             tmpList.add(
                 CalendarDay(
                     nextMonth.get(Calendar.YEAR),
-                    nextMonth.get(Calendar.MONTH)+1,
+                    nextMonth.get(Calendar.MONTH)+2,
                     i,
                     false
                 )
             )
         }
+        if (type == "dialog") {
+            while(tmpList.size < 42){
+                tmpList.add(
+                    CalendarDay(
+                        year = 0,
+                        month = 0,
+                        day = 0,
+                        isNow = false
+                    )
+                )
+            }
+        }else {
+            tmpList.removeAll { it == (CalendarDay(0, 0, 0, false)) }
+        }
+        Log.d("CustomCalendar","days = ${tmpList} \n size = ${tmpList.size}")
+
         submitList(tmpList, tmpDayList)
     }
 
@@ -164,7 +191,7 @@ class MonthCalendar{
         // 전 달의 날들로 1일 전을 채움
         val previousMonth = monthCalendar.clone() as Calendar
         previousMonth.add(Calendar.MONTH, -1)
-        val lastDayOfPreviousMonth = previousMonth.getActualMaximum(monthCalendar.get(Calendar.MONTH)-1)
+        val lastDayOfPreviousMonth = previousMonth.getActualMaximum(Calendar.DAY_OF_MONTH)
         
         for (i in 1 until firstDayOfWeek){
             tmpList.add(
@@ -191,10 +218,17 @@ class MonthCalendar{
             )
         }
 
-        //다음 달 날들로 7 * 6 사이즈를 맞추기
+        //다음 달 날짜 추가
         val nextMonth = monthCalendar.clone() as Calendar
-        nextMonth.add(Calendar.MONTH, 1)
-        val daysToAdd = 42 - tmpList.size
+        nextMonth.add(month, 1)
+        var daysToAdd = 0
+        //다음 달 몇 일을 추가해야 할 지 설정
+        for (i in 0..6){
+            if ((tmpList.size + i)%7 == 0){
+                daysToAdd = i
+                break
+            }
+        }
         for (i in 1..daysToAdd){
             tmpList.add(
                 CalendarDay(
@@ -238,12 +272,15 @@ fun CustomCalendar(
     onChangeSelectDate : (CalendarDay) -> Unit,
     isBottomNavClick : () -> Unit
 ){
+    val TAG = "CustomCalendar"
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         val days = monthCalendar.dayList.observeAsState()
+        Log.d(TAG,"days = ${days}")
 
         Row(
             Modifier
@@ -317,7 +354,8 @@ fun CustomCalendar(
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(7),
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier
+                .padding(top = 16.dp)
                 .weight(1f)
         ){
             items(days.value!!){date ->
@@ -334,18 +372,21 @@ fun CustomCalendar(
                             text = "${date.day}",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable{
+                                .clickable {
                                     onChangeSelectDate(date)
                                 }
                                 .height(35.dp)
                                 .padding(8.dp)
                                 .border(
-                                    border = if(date == selectedDate) BorderStroke(width = 1.dp, color = SpinnerBorder) else BorderStroke(width = 0.dp, color = Color.Transparent),
+                                    border = if (date == selectedDate) BorderStroke(
+                                        width = 1.dp,
+                                        color = SpinnerBorder
+                                    ) else BorderStroke(width = 0.dp, color = Color.Transparent),
                                     shape = CircleShape
                                 ),
                             textAlign = TextAlign.Center,
                             fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-                            color = if(!date.isNow){SpinnerBorder} else {CalendarText}
+                            color = if(!date.isNow) SpinnerBorder else CalendarText
                         )
                     }
                 }
@@ -353,7 +394,8 @@ fun CustomCalendar(
         }
         Row(
             horizontalArrangement = Arrangement.End,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(end = 7.dp)
                 .height(50.dp)
         ){

@@ -1,8 +1,6 @@
 package com.example.familyproject.AndroidLarge39
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,14 +22,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.familyproject.Components.CustomButton
 import com.example.familyproject.Components.CustomEditText
 import com.example.familyproject.Components.CustomImageButton
 import com.example.familyproject.R
 import com.example.familyproject.ui.theme.AndroidLarge17SpotColor
-import com.example.familyproject.ui.theme.ButtonBackgroundPurple
 import com.example.familyproject.ui.theme.DescriptionText
-import com.example.familyproject.ui.theme.White
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -414,49 +408,6 @@ fun TravelScreen(){
             fontSize = 15.sp,
             color = DescriptionText
         )
-
-        Spacer(Modifier.height(19.dp))
-
-        /** 작성된 정보를 기반으로 데이터를 추가 */
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                Modifier.weight(1f)
-            ) {
-                CustomImageButton(
-                    modifier = Modifier
-                        .height(24.dp)
-                        .width(24.dp),
-                    icon = R.drawable.add_floating_button,
-                    description = "Add Button",
-                    onClick = {}
-                )
-                Spacer(Modifier.width(20.dp))
-                Text(
-                    text = "하위 페이지 추가"
-                )
-            }
-            /** 작성된 정보를 기반으로 데이터를 추가 */
-            CustomButton(
-                modifier = Modifier
-                    .width(84.dp)
-                    .height(40.dp)
-                    .background(
-                        color = ButtonBackgroundPurple,
-                        shape = RoundedCornerShape(size = 8.dp)
-                    ),
-                onClick = {
-                    /** 작성된 정보를 기반으로 데이터를 추가 */
-                },
-                content = "저장",
-                contentSize = 14.sp,
-                contentPadding = PaddingValues(horizontal = 28.dp, vertical = 13.dp),
-                contentColor = White,
-                containerColor = ButtonBackgroundPurple
-            )
-        }
     }
 }
 

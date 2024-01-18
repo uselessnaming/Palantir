@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familyproject.CalendarDay
-import com.example.familyproject.MonthCalendar
 import com.example.familyproject.R
+import com.example.familyproject.model.data.MonthCalendar
 import com.example.familyproject.ui.theme.FamilyProjectTheme
 import com.example.familyproject.ui.theme.SpinnerBorder
 
@@ -36,7 +35,7 @@ fun CustomSubCalendar(
     onDateChanged : (CalendarDay) -> Unit
 ){
     /** AndroidLarge35에서 어떤 날을 선택했을 경우 해당 날짜를 기준으로하는 1중리을 가져오는 것으로 바꿔야 함 (현재 : 현재 월의 첫 주를 가져옴) */
-    val daysOfWeek = monthCalendar.weekList.observeAsState()
+    val daysOfWeek = listOf<CalendarDay>()
 
     val fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium))
 
@@ -113,7 +112,7 @@ fun CustomSubCalendar(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            daysOfWeek.value!!.forEach{date ->
+            daysOfWeek.forEach{date ->
                 Box(
                     modifier = Modifier.weight(1f)
                         .border(

@@ -18,6 +18,7 @@ import com.example.familyproject.AndroidLarge39.AndroidLarge39
 import com.example.familyproject.AndroidLarge43.AndroidLarge43
 import com.example.familyproject.AndroidLarge44.AndroidLarge44
 import com.example.familyproject.Components.ProjectScreen
+import com.example.familyproject.model.data.MonthCalendar
 import com.example.familyproject.ui.theme.FamilyProjectTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,11 +40,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = ProjectScreen.AndroidLarge34.name
+                        startDestination = ProjectScreen.AndroidLarge35.name
                     ){
-                        composable(ProjectScreen.AndroidLarge34.name){
-                            AndroidLarge34(navController)
-                        }
                         composable(ProjectScreen.AndroidLarge35.name){
                             AndroidLarge35(navController, monthCalendar)
                         }
@@ -70,6 +68,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     FamilyProjectTheme {
-        AndroidLarge34(navController = rememberNavController())
+        AndroidLarge35(navController = rememberNavController(), monthCalendar = MonthCalendar())
     }
 }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,10 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.familyproject.AndroidLarge35.CustomBottomSheetDialog
-import com.example.familyproject.AndroidLarge36.AndroidLarge36
-import com.example.familyproject.Components.Calendar.CustomCalendarDialog
 import com.example.familyproject.Components.CustomToolBar
 import com.example.familyproject.Components.ProjectScreen
+import com.example.familyproject.model.data.MonthCalendar
 import com.example.familyproject.ui.theme.FamilyProjectTheme
 
 @Composable
@@ -45,23 +43,7 @@ fun AndroidLarge35(
     var isMenuDown by remember{mutableStateOf(false)}
     var showMode by remember{mutableStateOf(0)} //0이면 Monthly 1이면 Weekly
 
-    if (isDateClicked){
-        CustomCalendarDialog(
-            modifier = Modifier.width((screenWidth * 0.95).dp)
-                .height((screenHeight * 0.55).dp),
-            monthCalendar = monthCalendar,
-            selectedNow = selectedDate,
-            onDismissRequest = {
-                isDateClicked = !isDateClicked
-            },
-            onDateSelected = { date ->
-                selectedDate = date
-                currentYearMonth = selectedDate.year.toString() + "년" + selectedDate.month.toString() + "월"
-                monthCalendar.updateCalendar(date.year, date.month)
-                isDateClicked = !isDateClicked
-            },
-        )
-    }
+
 
     if (isBottomNavClicked){
         CustomBottomSheetDialog(
@@ -110,30 +92,17 @@ fun AndroidLarge35(
             Spacer(modifier = Modifier.height(23.dp))
 
             //mode가 0이면 달력을 그리고 1이면 주간 리스트를 그림
-            if (showMode == 0) {
-                CustomCalendar(
-                    monthCalendar = monthCalendar,
-                    selectedDate = selectedDate,
-                    onChangeSelectDate = { date ->
-                        selectedDate = date
-                    },
-                    isBottomNavClick = {
-                        isBottomNavClicked = !isBottomNavClicked
-                    }
-                )
-            } else if (showMode == 1){
-                //서버에서 해당 날짜에 맞는 데이터를 받아옴
-                monthCalendar.getWeek(selectedDate)
-                AndroidLarge36(
-                    monthCalendar = monthCalendar,
-                    selectedDate = selectedDate,
-                    onDateChanged = {date ->
-                        selectedDate = date
-                    }
-                )
-            } else {
-                throw NoSuchElementException("Error : 모드 선택 오류 \n 현재 모드 : ${showMode}.")
-            }
+
+            CustomCalendar(
+                monthCalendar = monthCalendar,
+                selectedDate = selectedDate,
+                onChangeSelectDate = { date ->
+                    selectedDate = date
+                },
+                isBottomNavClick = {
+                    isBottomNavClicked = !isBottomNavClicked
+                }
+            )
         }
     }
 }

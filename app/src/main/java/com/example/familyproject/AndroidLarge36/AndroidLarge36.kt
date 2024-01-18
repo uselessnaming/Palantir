@@ -26,7 +26,7 @@ import com.example.familyproject.Components.Calendar.CustomSubCalendar
 import com.example.familyproject.Components.CustomButton
 import com.example.familyproject.Components.CustomLine
 import com.example.familyproject.Components.CustomOutlineButton
-import com.example.familyproject.MonthCalendar
+import com.example.familyproject.model.data.MonthCalendar
 import com.example.familyproject.ui.theme.AndroidLarge17AmbientColor
 import com.example.familyproject.ui.theme.AndroidLarge17SpotColor
 import com.example.familyproject.ui.theme.Border

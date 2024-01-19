@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import com.example.familyproject.R
 
@@ -23,5 +24,6 @@ fun CustomTextButton(
         fontSize = fontSize,
         color = textColor,
         fontFamily = fontFamily,
+        fontWeight = FontWeight(500)
     )
 }

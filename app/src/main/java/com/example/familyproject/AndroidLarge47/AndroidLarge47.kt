@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -33,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.familyproject.AndroidLarge47.ThreeDotsMenu
 import com.example.familyproject.Components.CustomImageButton
 import com.example.familyproject.Components.CustomRoundedCheckBox
 import com.example.familyproject.Components.TopBar
@@ -91,21 +89,6 @@ fun AndroidLarge47(
                         icon = R.drawable.three_dots_menu,
                         onClick = {menuState = true},
                         description = "dots menu"
-                    )
-                }
-                DropdownMenu(
-                    modifier = Modifier,
-                    expanded = menuState,
-                    onDismissRequest = { menuState = false },
-                ){
-                    ThreeDotsMenu(
-                        menus = menus,
-                        isExpanded = isMenuDown,
-                        onDismissRequest = {
-                            isMenuDown = !isMenuDown
-                        },
-                        navController = navController,
-                        navs = listOf() // 임시
                     )
                 }
 

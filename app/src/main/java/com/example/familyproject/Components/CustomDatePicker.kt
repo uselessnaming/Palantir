@@ -219,14 +219,6 @@ fun CustomDatePickerDialog(
                                 text = "${date.day}",
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable {
-                                        if (date.year < selectedDate.year || date.month < selectedDate.month) {
-                                            calendar.setPrevMonth()
-                                        } else if (date.year > selectedDate.year || date.month > selectedDate.month) {
-                                            calendar.setNextMonth()
-                                        }
-                                        selectedDate = date
-                                    }
                                     .height(35.dp)
                                     .padding(8.dp)
                                     .border(

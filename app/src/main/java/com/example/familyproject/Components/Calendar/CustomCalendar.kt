@@ -1,5 +1,6 @@
 package com.example.familyproject
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.familyproject.Components.CustomImageButton
 import com.example.familyproject.model.data.MonthCalendar
+import com.example.familyproject.model.data.TTAG
 import com.example.familyproject.ui.theme.CalendarText
 import com.example.familyproject.ui.theme.SpinnerBorder
 import com.example.familyproject.ui.theme.TextColor
@@ -130,6 +132,11 @@ fun CustomCalendar(
                         .weight(1f)
                         .height(110.dp)
                         .clickable {
+                            if (date.year < selectedDate.year || (date.year == selectedDate.year && date.month < selectedDate.month)) {
+                                monthCalendar.setPrevMonth()
+                            } else if (date.year > selectedDate.year || date.month > selectedDate.month) {
+                                monthCalendar.setNextMonth()
+                            }
                             onChangeSelectDate(date)
                         }
                 ){
@@ -139,12 +146,13 @@ fun CustomCalendar(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    if (date.year < selectedDate.year || date.month < selectedDate.month) {
+                                    if (date.year < selectedDate.year || (date.year == selectedDate.year && date.month < selectedDate.month)) {
                                         monthCalendar.setPrevMonth()
                                     } else if (date.year > selectedDate.year || date.month > selectedDate.month) {
                                         monthCalendar.setNextMonth()
                                     }
                                     onChangeSelectDate(date)
+                                    return@clickable
                                 }
                                 .height(35.dp)
                                 .padding(8.dp)

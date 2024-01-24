@@ -54,3 +54,8 @@ val Gray4 = Color(0xFFECEDF0)
 val Gray5 = Color(0x40C8CBD6)
 
 val Purple = Color(0xFF625FE4)
+
+val Black1 = Color(0xFF1C1E2A)
+val Black2 = Color(0xFF333333)
+
+val Red1 = Color(0xFFF53838)

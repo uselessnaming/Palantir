@@ -2,7 +2,6 @@ package com.example.familyproject.Components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -93,7 +92,6 @@ fun DrawerContent(
             .fillMaxHeight()
             .width(width)
             .background(color = Color.White)
-            .border(width = 1.dp, color = Color.Black) //test
             .padding(top = 16.dp, bottom = 26.dp)
     ){
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr){

@@ -18,6 +18,7 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -67,6 +70,8 @@ fun AndroidLarge35(
 
     val coroutineScope = rememberCoroutineScope()
 
+    var searchContent by remember {mutableStateOf("")}
+
     //dialog 띄우기
     if (showDialog) {
         CustomDatePickerDialog(
@@ -93,79 +98,92 @@ fun AndroidLarge35(
         )
     }
 
-    ModalNavigationDrawer(
-        drawerContent = {
-            ModalDrawerSheet{
-                DrawerContent()
-            }
-        },
-        drawerState = drawerState,
-        gesturesEnabled = true
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(horizontal = 16.dp),
-        ){
-            /** R.drawable.calendar_picker하고 three_dots_menu하고 switch */
-            Column(
-                modifier = Modifier.padding(top = 13.dp)
-            ){
-                CustomToolBar(
-                    content = {
-                        Row(
-                            modifier = Modifier.clickable{
-                                showDialog = true
-                            },
-                            verticalAlignment = Alignment.CenterVertically
-                        ){
-                            CustomTextButton(
-                                modifier = Modifier.clickable{
-                                    isMenuOpen = !isMenuOpen
-                                },
-                                content = currentYearMonth,
-                                fontSize = 20.sp,
-                                fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
-                                textColor = ThickTextColor
-                            )
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl){
+        ModalNavigationDrawer(
+            drawerContent = {
+                ModalDrawerSheet{
+                    DrawerContent(
+                        width = (screenWidth - 65).dp,
+                        value = searchContent,
+                        onChangeValue = {
+                            searchContent = it
+                        },
+                        onSearchClick = {
+                            /** 검색 이벤트 */
+                        }
+                    )
+                }
+            },
+            drawerState = drawerState,
+            gesturesEnabled = true
+        ) {
+            CompositionLocalProvider(LocalLayoutDirection provides  LayoutDirection.Ltr) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White)
+                        .padding(horizontal = 16.dp),
+                ){
+                    /** R.drawable.calendar_picker하고 three_dots_menu하고 switch */
+                    Column(
+                        modifier = Modifier.padding(top = 13.dp)
+                    ){
+                        CustomToolBar(
+                            content = {
+                                Row(
+                                    modifier = Modifier.clickable{
+                                        showDialog = true
+                                    },
+                                    verticalAlignment = Alignment.CenterVertically
+                                ){
+                                    CustomTextButton(
+                                        modifier = Modifier.clickable{
+                                            isMenuOpen = !isMenuOpen
+                                        },
+                                        content = currentYearMonth,
+                                        fontSize = 20.sp,
+                                        fontFamily = FontFamily(Font(R.font.gmarket_sans_ttf_medium)),
+                                        textColor = ThickTextColor
+                                    )
 
-                            Spacer(Modifier.width(8.dp))
+                                    Spacer(Modifier.width(8.dp))
 
-                            IconButton(
-                                modifier = Modifier.size(12.dp),
-                                onClick = {
-                                    showDialog = true
+                                    IconButton(
+                                        modifier = Modifier.size(12.dp),
+                                        onClick = {
+                                            showDialog = true
+                                        }
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.btn_toggle),
+                                            contentDescription = "Show Dialog"
+                                        )
+                                    }
                                 }
-                            ) {
-                                Icon(
-                                    painter = painterResource(R.drawable.btn_toggle),
-                                    contentDescription = "Show Dialog"
-                                )
-                            }
-                        }
-                    },
-                    onMenuClick = {
-                        coroutineScope.launch(Dispatchers.Main){
-                            drawerState.open()
-                        }
-                    },
-                )
-                Spacer(modifier = Modifier.height(23.dp))
+                            },
+                            onMenuClick = {
+                                coroutineScope.launch(Dispatchers.Main){
+                                    drawerState.open()
+                                }
+                            },
+                        )
+                        Spacer(modifier = Modifier.height(23.dp))
 
-                CustomCalendar(
-                    monthCalendar = monthCalendar,
-                    selectedDate = selectedDate,
-                    onChangeSelectDate = { date ->
-                        if (selectedDate.month != date.month) {
-                            currentYearMonth = monthCalendar.getDate()
-                        }
-                        selectedDate = date
-                    },
-                    isBottomNavClick = {
-                        isBottomNavClicked = !isBottomNavClicked
+                        CustomCalendar(
+                            monthCalendar = monthCalendar,
+                            selectedDate = selectedDate,
+                            onChangeSelectDate = { date ->
+                                if (selectedDate.month != date.month) {
+                                    currentYearMonth = monthCalendar.getDate()
+                                }
+                                selectedDate = date
+                            },
+                            isBottomNavClick = {
+                                isBottomNavClicked = !isBottomNavClicked
+                            }
+                        )
                     }
-                )
+                }
             }
         }
     }
